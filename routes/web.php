@@ -2,125 +2,223 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AccountController;
-use App\Models\Account;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
+
+// Controllers
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountBillingController;
 use App\Http\Controllers\DigitalMarketingController;
 use App\Http\Controllers\HostingDetailController;
+use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\GraphicsController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\RenewalsController;
+use App\Http\Controllers\OutputGstController;
+use App\Http\Controllers\InputGstinController;
+use App\Http\Controllers\ProformaInvoiceController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\SpecialFeatureController;
+use App\Http\Controllers\IncomeExpenseController;
 
-
+// Models
+use App\Models\Account;
 use App\Models\DigitalMarketingCampaign;
 
-Route::get('/digital-marketing/reports', function (Request $request) {
-    $type = $request->query('type');
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATION ROUTES
+|--------------------------------------------------------------------------
+*/
 
-    $campaigns = DigitalMarketingCampaign::where('category', $type)->get();
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    $activeCampaigns = $campaigns->where('projectStatus', 'Active');
-
-    $renewalsDue = $campaigns->filter(function ($c) {
-        return $c->billingDate && \Carbon\Carbon::parse($c->billingDate)->diffInDays(now()) <= 60;
-    });
-
-    return view('modules.digital-marketing.reports', compact('type', 'campaigns', 'activeCampaigns', 'renewalsDue'));
-});
-Route::post('/accounts', function () {
-    Log::info('Fallback route hit!');
-    return 'OK';
-});
-
-Route::get('/debug-account-count', function () {
-    return Account::count();
-});
-
-
-// ✅ Only one route for dashboard — loads data dynamically
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-// ✅ Redirect root (/) to dashboard
 Route::get('/', function () {
-    return redirect('/dashboard');
+    if (!session('logged_in')) {
+        return redirect('/login');
+    }
+    return view('layouts.home');
 });
 
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
 
-Route::resource('accounts', AccountController::class);
+Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
+/*
+|--------------------------------------------------------------------------
+| ACCOUNT & BILLING
+|--------------------------------------------------------------------------
+*/
 
-
-// Account & Billing
-Route::get('/account-billing', fn() => view('modules.account-billing.index'));
-Route::get('/account-billing/index1', fn() => view('modules.account-billing.index1'));
-
-// Digital Marketing
-
-
-Route::get('/digital-marketing', [DigitalMarketingController::class, 'index'])->name('digitalmarketing.index');
-
-Route::get('/digital-marketing/add', function () {
-    return view('modules.digital-marketing.add');
-});
-Route::post('/digital-marketing/store', [DigitalMarketingController::class, 'store'])->name('digitalmarketing.store');
-Route::get('/digital-marketing/view/{id}', [DigitalMarketingController::class, 'show']);
-Route::get('/digital-marketing/edit/{id}', [DigitalMarketingController::class, 'edit']);
-Route::post('/digital-marketing/update/{id}', [DigitalMarketingController::class, 'update']);
-Route::get('/digital-marketing/delete/{id}', [DigitalMarketingController::class, 'destroy']);
-Route::post('/digital-marketing/store', [DigitalMarketingController::class, 'store'])->name('digitalmarketing.store');
-
-
-
-// GST
-Route::get('/gst', fn() => view('modules.gst.index'));
-
-// Hosting & Servers
-Route::get('/hosting-servers', [HostingDetailController::class, 'index']);
-Route::get('/hosting-servers/index1', fn() => view('modules.hosting-servers.index1'));
-Route::get('/hosting-servers/details', fn() => view('modules.hosting-servers.details'));
-
-// Income & Expense
-Route::get('/income-expense', fn() => view('modules.income-expense.index'));
-Route::get('/income-expense/add-income-expense', fn() => view('modules.income-expense.add-income-expense'));
-Route::get('/income-expense/reports', fn() => view('modules.income-expense.reports'));
-
-// Invoice
-Route::get('/invoice', fn() => view('modules.invoice.index'));
-Route::get('/invoice/proforma', fn() => view('modules.invoice.proforma'));
-
-
-
-
-
-// Website
-Route::get('/website', [WebsiteController::class, 'index']);
-
-Route::get('/website/add', fn() => view('modules.website.add'));
-Route::get('/website/reports', fn() => view('modules.website.reports'));
-Route::get('/website/wa-details', fn() => view('modules.website.wa-detail'));
-Route::get('/reports', function () {
-    return view('modules.website.reports');
-});
-Route::get('/website/add', function () {
-    return view('modules.website.add');
-});
-Route::get('/reports', function (Request $request) {
-    $type = $request->query('type');
-
-    $accounts = $type === 'total'
-        ? Account::all()
-        : Account::where('category', $type)->get();
-
-    $renewalsDue = Account::whereBetween('renewal_date', [now(), now()->addDays(60)])->get();
-
-    return view('modules.website.reports', compact('type', 'accounts', 'renewalsDue'));
+Route::prefix('account-billing')->group(function () {
+    Route::get('/', [AccountBillingController::class, 'index'])->name('account-billing.index');
+    Route::get('/finance', [AccountBillingController::class, 'financePage'])->name('account-billing.finance');
+    Route::get('/gst-report', [AccountBillingController::class, 'gstReport'])->name('account-billing.gst-report');
+    Route::get('/proforma', [AccountBillingController::class, 'proformaInvoice'])->name('account-billing.proforma');
+    Route::get('/invoice', [AccountBillingController::class, 'invoice'])->name('account-billing.invoice');
+    Route::get('/payment-link', [AccountBillingController::class, 'sendPaymentLink'])->name('account-billing.payment-link');
+    Route::get('/add-income-expense', [AccountBillingController::class, 'addIncomeExpensePage'])->name('account-billing.add-income-expense');
+    Route::post('/store-income-expense', [AccountBillingController::class, 'storeIncomeExpense'])->name('account-billing.store-income-expense');
 });
 
+/*
+|--------------------------------------------------------------------------
+| OUTPUT GST
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/wa-detail', function (Request $request) {
-    $slno = $request->query('slno');
-    $type = $request->query('type');
-    return view('modules.website.wa-detail', compact('slno', 'type'));
+Route::prefix('account-billing/output-gst')->group(function () {
+    Route::get('/', [OutputGstController::class, 'index'])->name('output-gst.index');
+    Route::get('/create', [OutputGstController::class, 'create'])->name('output-gst.create');
+    Route::post('/store', [OutputGstController::class, 'store'])->name('output-gst.store');
 });
-Route::get('/hosting-servers/details', [HostingDetailController::class, 'index']);
-Route::get('/hosting-servers/add', [HostingDetailController::class, 'create']);
-Route::post('/hosting-servers/store', [HostingDetailController::class, 'store']);
+
+/*
+|--------------------------------------------------------------------------
+| INPUT GST
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('account-billing/input-gst')->group(function () {
+    Route::get('/', [InputGstinController::class, 'index'])->name('input-gst.index');
+    Route::get('/create', [InputGstinController::class, 'create'])->name('input-gst.create');
+    Route::post('/store', [InputGstinController::class, 'store'])->name('input-gst.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| PROFORMA & INVOICE
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('account-billing')->group(function () {
+    Route::resource('proforma', ProformaInvoiceController::class);
+    Route::resource('invoice', InvoiceController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| INCOME & EXPENSE
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('account-billing')->group(function () {
+    Route::get('/income-expense', [IncomeExpenseController::class, 'index'])->name('account-billing.income-expense');
+    Route::get('/income-report', [IncomeExpenseController::class, 'incomeReport'])->name('account-billing.income-report');
+    Route::get('/expense-report', [IncomeExpenseController::class, 'expenseReport'])->name('account-billing.expense-report');
+    Route::post('/store', [IncomeExpenseController::class, 'store'])->name('account-billing.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| RENEWALS
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/renewals', [RenewalsController::class, 'index'])->name('renewals.index');
+Route::get('/renewals/fetch/{type}', [RenewalsController::class, 'fetchRenewals'])->name('renewals.fetch');
+Route::post('/renewals/request-payment/{id}', [RenewalsController::class, 'requestPayment'])->name('renewals.requestPayment');
+
+/*
+|--------------------------------------------------------------------------
+| GRAPHICS & PRODUCTS
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('graphics')->group(function () {
+    Route::get('/', [GraphicsController::class, 'index'])->name('graphics.index');
+    Route::get('/add', [GraphicsController::class, 'create'])->name('graphics.add');
+    Route::post('/store', [GraphicsController::class, 'store'])->name('graphics.store');
+    Route::get('/{id}', [GraphicsController::class, 'show'])->name('graphics.detail');
+    Route::get('/{id}/edit', [GraphicsController::class, 'edit'])->name('graphics.edit');
+    Route::put('/{id}', [GraphicsController::class, 'update'])->name('graphics.update');
+    Route::delete('/{id}', [GraphicsController::class, 'destroy'])->name('graphics.destroy');
+    Route::get('/reports', [GraphicsController::class, 'reports'])->name('graphics.reports');
+});
+
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductsController::class, 'index'])->name('products.index');
+    Route::get('/create', [ProductsController::class, 'create'])->name('products.add');
+    Route::post('/store', [ProductsController::class, 'store'])->name('products.store');
+    Route::get('/view/{id}', [ProductsController::class, 'show'])->name('products.view');
+    Route::get('/edit/{id}', [ProductsController::class, 'edit'])->name('products.edit');
+    Route::put('/{id}', [ProductsController::class, 'update'])->name('products.update');
+    Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| DIGITAL MARKETING
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('digital-marketing')->group(function () {
+    Route::get('/', [DigitalMarketingController::class, 'index'])->name('digitalmarketing.index');
+    Route::get('/add', [DigitalMarketingController::class, 'create'])->name('digitalmarketing.add');
+    Route::post('/store', [DigitalMarketingController::class, 'store'])->name('digitalmarketing.store');
+    Route::get('/view/{id}', [DigitalMarketingController::class, 'show'])->name('digitalmarketing.view');
+    Route::get('/edit/{id}', [DigitalMarketingController::class, 'edit'])->name('digitalmarketing.edit');
+    Route::post('/update/{id}', [DigitalMarketingController::class, 'update'])->name('digitalmarketing.update');
+    Route::get('/delete/{id}', [DigitalMarketingController::class, 'destroy'])->name('digitalmarketing.delete');
+    Route::get('/reports', function (Request $request) {
+        $type = $request->query('type');
+        $campaigns = DigitalMarketingCampaign::where('category', $type)->get();
+        $activeCampaigns = $campaigns->where('projectStatus', 'Active');
+        $renewalsDue = $campaigns->filter(fn($c) => $c->billingDate && Carbon::parse($c->billingDate)->diffInDays(now()) <= 60);
+        return view('modules.digital-marketing.reports', compact('type', 'campaigns', 'activeCampaigns', 'renewalsDue'));
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
+| WEBSITE
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('website')->group(function () {
+    Route::get('/', [WebsiteController::class, 'index'])->name('website.index');
+    Route::get('/add', fn() => view('modules.website.add'))->name('website.add');
+    Route::get('/reports', fn() => view('modules.website.reports'))->name('website.reports');
+    Route::get('/wa-details', fn() => view('modules.website.wa-detail'))->name('website.wa-detail');
+});
+
+/*
+|--------------------------------------------------------------------------
+| HOSTING SERVERS
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('hosting-servers')->group(function () {
+    Route::get('/', [HostingDetailController::class, 'index'])->name('hosting.index');
+    Route::get('/add', [HostingDetailController::class, 'create'])->name('hosting.add');
+    Route::post('/store', [HostingDetailController::class, 'store'])->name('hosting.store');
+});
+
+/*
+|--------------------------------------------------------------------------
+| SPECIAL FEATURES
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/special-features', [SpecialFeatureController::class, 'index'])->name('special-features.index');
+
+/*
+|--------------------------------------------------------------------------
+| DEBUG / DEV ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/debug-account-count', fn() => Account::count());
+Route::post('/accounts', fn() => Log::info('Fallback route hit!'));

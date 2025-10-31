@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>@yield('title', 'Accounts')</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  {{-- Use one asset folder or merge both --}}
   <link rel="stylesheet" href="{{ asset('dashboard-ui/css/styles.css') }}">
   <link rel="stylesheet" href="{{ asset('dashboard-ui/css/mobile-responsive.css') }}">
 </head>
@@ -16,7 +19,6 @@
       </div>
       <div class="nav">
         <div class="section-title">Menu</div>
-        
         <a href="{{ url('/dashboard') }}"><span>📁</span><span class="text">Dashboard</span></a>
         <a href="{{ url('/website') }}"><span>📁</span><span class="text">Website & Applications</span></a>
         <a href="{{ url('/products') }}"><span>📁</span><span class="text">Products</span></a>
@@ -45,5 +47,6 @@
   </div>
 
   <script src="{{ asset('dashboard-ui/js/app.js') }}"></script>
+  @yield('scripts')
 </body>
 </html>
