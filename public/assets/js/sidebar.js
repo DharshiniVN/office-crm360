@@ -7,15 +7,16 @@ function loadSidebar() {
     </div>
     <div class="nav">
       <div class="section-title">Menu</div>
-      <a href="../index.html" class="${getCurrentPage() === 'dashboard' ? 'active' : ''}"><span>📁</span><span class="text">Dashboard</span></a>
-      <a href="../website/index.html" class="${getCurrentPage() === 'website' ? 'active' : ''}"><span>📁</span><span class="text">Website & Applications</span></a>
-      <a href="../products/index.html" class="${getCurrentPage() === 'products' ? 'active' : ''}"><span>📁</span><span class="text">Products</span></a>
-      <a href="../digital-marketing/index.html" class="${getCurrentPage() === 'digital-marketing' ? 'active' : ''}"><span>📁</span><span class="text">Digital Marketing</span></a>
-      <a href="../graphics/index.html" class="${getCurrentPage() === 'graphics' ? 'active' : ''}"><span>📁</span><span class="text">Graphics</span></a>
-      <a href="../renewal/index.html" class="${getCurrentPage() === 'renewal' ? 'active' : ''}"><span>📁</span><span class="text">Renewal</span></a>
-      <a href="../account-billing/index.html" class="${getCurrentPage() === 'account-billing' ? 'active' : ''}"><span>📁</span><span class="text">Account and Billing</span></a>
-      <a href="../hosting-servers/index.html" class="${getCurrentPage() === 'hosting-servers' ? 'active' : ''}"><span>📁</span><span class="text">Hosting and Servers</span></a>
-      <a href="../special-features/index.html" class="${getCurrentPage() === 'special-features' ? 'active' : ''}"><span>📁</span><span class="text">Special Features</span></a>
+      <a href="/dashboard" class="${getCurrentPage() === 'dashboard' ? 'active' : ''}"><span>📁</span><span class="text">Dashboard</span></a>
+    <a href="/website" class="${getCurrentPage() === 'website' ? 'active' : ''}"><span>📁</span><span class="text">Website & Applications</span></a>
+    <a href="/products" class="${getCurrentPage() === 'products' ? 'active' : ''}"><span>📁</span><span class="text">Products</span></a>
+    <a href="/digital-marketing" class="${getCurrentPage() === 'digital-marketing' ? 'active' : ''}"><span>📁</span><span class="text">Digital Marketing</span></a>
+    <a href="/graphics" class="${getCurrentPage() === 'graphics' ? 'active' : ''}"><span>📁</span><span class="text">Graphics</span></a>
+    <a href="/renewal" class="${getCurrentPage() === 'renewal' ? 'active' : ''}"><span>📁</span><span class="text">Renewal</span></a>
+    <a href="/account-billing" class="${getCurrentPage() === 'account-billing' ? 'active' : ''}"><span>📁</span><span class="text">Account and Billing</span></a>
+    <a href="/hosting-servers" class="${getCurrentPage() === 'hosting-servers' ? 'active' : ''}"><span>📁</span><span class="text">Hosting and Servers</span></a>
+    <a href="/special-features" class="${getCurrentPage() === 'special-features' ? 'active' : ''}"><span>📁</span><span class="text">Special Features</span></a>
+
     </div>
   `;
 
@@ -28,8 +29,10 @@ function loadSidebar() {
 function getCurrentPage() {
   const path = window.location.pathname;
 
-  if (path.includes('/index.html') || path.endsWith('/')) {
+  if (path === '/' || path === '/dashboard') {
     return 'dashboard';
+
+    
   } else if (path.includes('/website/')) {
     return 'website';
   } else if (path.includes('/products/')) {

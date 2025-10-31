@@ -120,6 +120,8 @@ Route::prefix('account-billing')->group(function () {
     Route::get('/expense-report', [IncomeExpenseController::class, 'expenseReport'])->name('account-billing.expense-report');
     Route::post('/store', [IncomeExpenseController::class, 'store'])->name('account-billing.store');
 });
+Route::get('/account-billing/proforma', [AccountBillingController::class, 'proforma'])->name('account-billing.proforma');
+Route::get('/account-billing/invoice', [AccountBillingController::class, 'invoice'])->name('account-billing.invoice');
 
 /*
 |--------------------------------------------------------------------------
@@ -147,6 +149,12 @@ Route::prefix('graphics')->group(function () {
     Route::delete('/{id}', [GraphicsController::class, 'destroy'])->name('graphics.destroy');
     Route::get('/reports', [GraphicsController::class, 'reports'])->name('graphics.reports');
 });
+// Route to show the form to create a new graphics project
+Route::get('/graphics/create', [GraphicsController::class, 'create'])->name('graphics.create');
+
+// Route to show graphics projects by category
+Route::get('/graphics/category/{category}', [GraphicsController::class, 'category'])->name('graphics.category');
+
 
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductsController::class, 'index'])->name('products.index');
@@ -157,7 +165,10 @@ Route::prefix('products')->group(function () {
     Route::put('/{id}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
 });
-
+Route::get('/products/category/{category}', [ProductsController::class, 'category'])->name('products.category');
+Route::get('/products/all', [ProductsController::class, 'all'])->name('products.all');
+Route::put('/products/add', [ProductsController::class, 'add']);
+Route::get('/products/add', [ProductsController::class, 'create'])->name('products.add');
 /*
 |--------------------------------------------------------------------------
 | DIGITAL MARKETING
@@ -186,12 +197,36 @@ Route::prefix('digital-marketing')->group(function () {
 | WEBSITE
 |--------------------------------------------------------------------------
 */
+Route::resource('website', AccountController::class)->names('accounts')->except(['show']);
+Route::get('/website', [WebsiteController::class, 'index'])->name('accounts.index');
+//Route::get('/website', [WebsiteController::class, 'index']);
+Route::post('/website', [AccountController::class, 'store'])->name('accounts.store');
+Route::get('/website/add', fn() => view('modules.website.add'));
+Route::get('/website/reports', fn() => view('modules.website.reports'));
+Route::get('/website/wa-details', fn() => view('modules.website.wa-detail'));
+Route::get('/reports', function () {
+    return view('modules.website.reports');
+});
+//Route::get('/website/add', function () {
+    //return view('modules.website.add');
+//});
+Route::get('/reports', function (Request $request) {
+    $type = $request->query('type');
 
-Route::prefix('website')->group(function () {
-    Route::get('/', [WebsiteController::class, 'index'])->name('website.index');
-    Route::get('/add', fn() => view('modules.website.add'))->name('website.add');
-    Route::get('/reports', fn() => view('modules.website.reports'))->name('website.reports');
-    Route::get('/wa-details', fn() => view('modules.website.wa-detail'))->name('website.wa-detail');
+    $accounts = $type === 'total'
+        ? Account::all()
+        : Account::where('category', $type)->get();
+
+    $renewalsDue = Account::whereBetween('renewal_date', [now(), now()->addDays(60)])->get();
+
+    return view('modules.website.reports', compact('type', 'accounts', 'renewalsDue'));
+});
+
+
+Route::get('/wa-detail', function (Request $request) {
+    $slno = $request->query('slno');
+    $type = $request->query('type');
+    return view('modules.website.wa-detail', compact('slno', 'type'));
 });
 
 /*
@@ -205,6 +240,7 @@ Route::prefix('hosting-servers')->group(function () {
     Route::get('/add', [HostingDetailController::class, 'create'])->name('hosting.add');
     Route::post('/store', [HostingDetailController::class, 'store'])->name('hosting.store');
 });
+Route::get('/hosting-servers/details', [HostingdetailController::class, 'details'])->name('hosting.details');
 
 /*
 |--------------------------------------------------------------------------

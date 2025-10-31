@@ -21,7 +21,7 @@ function loadRecord(){
   const record = data.find(r => String(r.slno) === String(slno));
   if(!record){
     alert('Record not found');
-    window.location.href = 'reports.html?type=' + type;
+   window.location.href = '/reports?type=' + type;
     return;
   }
   return record;

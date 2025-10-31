@@ -99,5 +99,5 @@ document.getElementById('editBtn').addEventListener('click', enableEditing);
 document.getElementById('saveBtn').addEventListener('click', saveChanges);
 document.getElementById('deleteBtn').addEventListener('click', deleteRecord);
 document.getElementById('backBtn').addEventListener('click', () => {
-  window.location.href = 'reports.html?type=' + type;
+  window.location.href = '/reports?type=' + type;
 });

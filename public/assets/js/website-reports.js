@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.target.classList.contains('view-btn')){
       const index = e.target.getAttribute('data-index');
       // Navigate to detail page with index param
-      window.location.href = `wa-detail.html?index=${index}`;
+     window.location.href = `/wa-detail?slno=${index}&type=website`;
     }
   });
 });

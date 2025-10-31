@@ -26,6 +26,7 @@ public function create()
 
 public function store(Request $request)
 {
+    dd($request->all());
     $data = $request->except('_token');
 
     // Manual mappings for DB-required fields
@@ -47,15 +48,16 @@ public function edit(Account $account)
     return view('modules.website.edit', compact('account'));
 }
 
-public function update(Request $request, Account $account)
-{
-    $account->update($request->all());
-    return redirect()->route('accounts.index');
-}
+//public function update(Request $request, Account $account)
+//{
+  //  $account->update($request->all());
+    //return redirect()->route('website.index');
+//}
 
-public function destroy(Account $account)
-{
-    $account->delete();
-    return redirect()->route('accounts.index');
-}
+//public function destroy(Account $account)
+//{
+  //  $account->delete();
+    //return redirect()->route('website.index');
+//}
+
 }

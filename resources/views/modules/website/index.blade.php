@@ -44,7 +44,7 @@
   window.accountsFromLaravel = @json($accounts);
   localStorage.setItem('accounts_wa_data', JSON.stringify(window.accountsFromLaravel));
 </script>
-  <<script src="{{ asset('dashboard-ui/js/app.js') }}"></script>
+  <script src="{{ asset('dashboard-ui/js/app.js') }}"></script>
 <script src="{{ asset('dashboard-ui/js/website.js') }}"></script>
 </body>
 </html>

@@ -33,6 +33,10 @@ class DigitalMarketingController extends Controller
         'seoRenewals', 'addRenewals', 'socialRenewals', 'comboRenewals'
     ));
 }
+public function create()
+{
+    return view('modules.digital-marketing.add');
+}
 public function show($id)
 {
     // Example: fetch record by ID

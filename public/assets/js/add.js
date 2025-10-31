@@ -58,5 +58,5 @@ form.addEventListener('submit',(e)=>{
   list.push(data);
   localStorage.setItem(key, JSON.stringify(list));
   // Redirect to main page
-  location.href = 'index.html';
+  location.href = '/website';
 });
