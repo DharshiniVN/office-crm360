@@ -1,0 +1,328 @@
+/* Mobile Responsive Styles for Dashboard and General Layout */
+
+/* Layout adjustments for tablets and smaller desktops */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 82px 1fr;
+  }
+  .nav a span.text {
+    display: none;
+  }
+  .brand .title {
+    display: none;
+  }
+  .content {
+    padding: 16px;
+  }
+  .topbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+  .income-expense-topbar {
+    margin-top: 15px;
+  }
+  .topbar-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .section-header h2 {
+    font-size: 20px;
+  }
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    min-height: 100px;
+    padding: 12px;
+  }
+  .card .count {
+    font-size: 24px;
+  }
+  .table-wrap {
+    padding: 12px;
+    max-height: 450px;
+  }
+  .table-actions {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 5px !important;
+    flex-wrap: nowrap !important;
+  }
+  .table-actions .search {
+    min-width: 120px !important;
+    flex-grow: 1 !important;
+    margin-right: 5px !important;
+    flex-shrink: 0 !important;
+  }
+  .table-actions .btn {
+    flex-shrink: 0 !important;
+    padding: 6px 8px !important;
+    font-size: 12px !important;
+  }
+  .modal .dialog {
+    min-width: 280px;
+    max-width: 95vw;
+    padding: 16px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    z-index: 1101;
+    transition: left 0.3s ease;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .btn {
+    width: auto;
+    max-width: 200px;
+  }
+  .table-wrap {
+    max-width: 100%;
+    overflow: auto;
+  }
+  .sidebar.open .nav a span.text {
+    display: inline;
+  }
+  .sidebar.open ~ .content .topbar .hamburger-menu {
+    display: none;
+  }
+  .topbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .income-expense-topbar {
+    margin-top: 15px;
+  }
+  .topbar-buttons {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .topbar-buttons .btn {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+  .hamburger-menu {
+    position: static;
+    cursor: pointer;
+    padding: 0 12px;
+  }
+  .topbar .h1 {
+    text-align: center;
+    margin: 0;
+  }
+  .topbar .user {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+  .topbar .actions {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+  }
+  .topbar .actions a {
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    z-index: auto !important;
+  }
+  .topbar .user .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--brand-2);
+  }
+  .panel div:first-child {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+  .panel div:first-child div:first-child {
+    font-size: 32px;
+  }
+  .panel div:first-child div:nth-child(2) div:first-child {
+    font-size: 20px;
+  }
+  .panel div:first-child div:nth-child(2) div:last-child {
+    font-size: 14px;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .card {
+    min-height: 80px;
+    padding: 12px;
+  }
+  .card .count {
+    font-size: 20px;
+  }
+  .table-wrap {
+    padding: 8px;
+    max-height: 500px;
+    position: relative;
+  }
+  .table-wrap > div {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+  }
+  .table {
+    min-width: 600px;
+    white-space: nowrap;
+  }
+  .table th,
+  .table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+  .table td:nth-child(5) { /* Description column */
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 200px;
+  }
+  .table-actions {
+    flex-direction:column;
+    align-items:stretch;
+    gap: 8px;
+    position: static;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: auto;
+  }
+  .table-actions .search {
+    min-width: auto;
+    width: 60%;
+  }
+  .table-actions button.btn {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  /* Stack chart containers vertically on mobile */
+  .content > div[style*="display: flex"] {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+  .form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .content {
+    padding: 8px;
+  }
+  .topbar .h1 {
+    font-size: 20px;
+  }
+  .topbar .user div:last-child {
+    display: none;
+  }
+  .panel div:first-child div:first-child {
+    font-size: 24px;
+  }
+  .panel div:first-child div:nth-child(2) div:first-child {
+    font-size: 18px;
+  }
+  .panel div:first-child div:nth-child(2) div:last-child {
+    font-size: 12px;
+  }
+  .section-header h2 {
+    font-size: 18px;
+  }
+  .card {
+    padding: 8px;
+  }
+  .card .label {
+    font-size: 14px;
+  }
+  .card .count {
+    font-size: 18px;
+  }
+  .table-wrap {
+    padding: 4px;
+    max-height: 400px;
+  }
+  .data-table {
+    font-size: 11px;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 6px 8px;
+  }
+  .modal .dialog {
+    min-width: 95vw;
+    max-width: 95vw;
+    padding: 8px;
+  }
+  .modal .title {
+    font-size: 16px;
+  }
+  .form input,
+  .form select,
+  .form textarea {
+    padding: 8px 10px;
+  }
+  .form {
+    grid-template-columns: 1fr;
+  }
+  .form input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .button-group .btn {
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-actions .btn {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}
