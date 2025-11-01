@@ -2,7 +2,15 @@
 
 @section('content')
 <h2>Create Account</h2>
-
+@if ($errors->any())
+  <div class="alert alert-danger">
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
 <form action="{{ route('accounts.store') }}" method="POST">
   @csrf
 
@@ -12,10 +20,11 @@
   <label>Contact</label>
   <input type="text" name="contact" required>
 
-  {{--<label>Gmail</label>
+  {{--<label>Gmail</label>]
+
   <input type="email" name="gmail" required>--}}
    <label>Gmail</label>
-<input type="email" name="gmail1" required>
+<input type="email" name="gmail" required>
 
   <label>Category</label>
   <input type="text" name="category" required>
@@ -26,10 +35,11 @@
   <label>Renewal Date</label>
   <input type="date" name="renewal_date" required>--}}
   <label>Renewal Amount</label>
-<input type="number" name="renewalAmount" required>
+<input type="number" name="renewal_amount" required>
+
 
 <label>Renewal Date</label>
-<input type="date" name="renewalDate" required>
+<input type="date" name="renewal_date" required>
 
 
   <label>Company ID</label>

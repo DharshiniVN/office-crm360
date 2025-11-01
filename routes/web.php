@@ -191,6 +191,7 @@ Route::prefix('digital-marketing')->group(function () {
         return view('modules.digital-marketing.reports', compact('type', 'campaigns', 'activeCampaigns', 'renewalsDue'));
     });
 });
+Route::post('/digital-marketing/store', [DigitalMarketingController::class, 'store'])->name('digital-marketing.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -228,7 +229,8 @@ Route::get('/wa-detail', function (Request $request) {
     $type = $request->query('type');
     return view('modules.website.wa-detail', compact('slno', 'type'));
 });
-
+Route::post('/website', [AccountController::class, 'store'])->name('accounts.store');
+Route::get('/website', [WebsiteController::class, 'index'])->name('accounts.index');
 /*
 |--------------------------------------------------------------------------
 | HOSTING SERVERS
