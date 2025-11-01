@@ -33,6 +33,10 @@ class DigitalMarketingController extends Controller
         'seoRenewals', 'addRenewals', 'socialRenewals', 'comboRenewals'
     ));
 }
+public function create()
+{
+    return view('modules.digital-marketing.add');
+}
 public function show($id)
 {
     // Example: fetch record by ID
@@ -64,6 +68,14 @@ public function store(Request $request)
     return redirect()->route('digitalmarketing.index')
         ->with('success', 'Campaign added successfully!');
 }
+//public function store(Request $request)
+//{
+    // Validate and save campaign data
+  //  $data = $request->all(); // Or use specific fields
 
+    // Example: DigitalMarketingCampaign::create($data);
+//
+  //  return redirect()->route('digital-marketing.index')->with('success', 'Campaign added successfully.');
+//}
 
 }

@@ -148,8 +148,8 @@
         <td>{{ $account->contact }}</td>
         <td>{{ $account->gmail }}</td>
         <td>{{ $account->category }}</td>
-        <td>{{ $account->renewalAmount }}</td> <!-- updated -->
-    <td>{{ $account->renewalDate }}</td> <!-- updated -->
+        <td>{{ $account->renewal_amount }}</td>
+<td>{{ $account->renewal_date }}</td>
         <td>{{ $account->company_id }}</td>
       <td>{{ $account->created_by }}</td>
       <td>{{ $account->updated_by }}</td>
@@ -244,8 +244,8 @@
         <td>{{ $account->contact }}</td>
         <td>{{ $account->gmail }}</td>
         <td>{{ $account->category }}</td>
-        <td>{{ $account->renewalAmount }}</td> <!-- updated -->
-    <td>{{ $account->renewalDate }}</td> <!-- updated -->
+        <td>{{ $account->renewal_amount }}</td>
+<td>{{ $account->renewal_date }}</td>
            <td>{{ $account->company_id }}</td>
       <td>{{ $account->created_by }}</td>
       <td>{{ $account->updated_by }}</td>

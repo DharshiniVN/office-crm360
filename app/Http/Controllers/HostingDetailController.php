@@ -140,4 +140,31 @@ $activeEmails = HostingDetail::whereNotNull('professional_email')
 
         return redirect('/hosting-servers')->with('success', 'Hosting detail added successfully!');
     }
+   public function details(Request $request)
+{
+    $type = $request->query('type');
+
+    $query = HostingDetail::query(); // ✅ use HostingDetail model
+
+    switch ($type) {
+        case 'domains':
+            $query->whereNotNull('domain_name');
+            break;
+        case 'servers':
+            $query->whereNotNull('server');
+            break;
+        case 'emails':
+            $query->whereNotNull('professional_email')->where('professional_email', '!=', '');
+            break;
+        case 'expiries':
+            $query->whereMonth('renewal_date', now()->month)->whereYear('renewal_date', now()->year);
+            break;
+        default:
+            // no filter
+    }
+
+    $details = $query->get();
+
+    return view('modules.hosting-servers.details', compact('details'));
+}
 }

@@ -1,0 +1,250 @@
+/* Layout for top summary cards */
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.dashboard-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.dashboard-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0;
+}
+
+/* Light theme colors for cards */
+.light-blue   { background: #f0f7ff; }
+.light-orange { background: #fff7e6; }
+.light-green  { background: #e9fcef; }
+.light-red    { background: #fdeeee; }
+
+/* Renewals Table */
+.renewals-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.renewals-table th,
+.renewals-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+/* Status labels */
+.status {
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.active   { background: #e5f8e8; color: #2d7a3f; }
+.status.expiring { background: #fff4e0; color: #a56500; }
+.status.overdue  { background: #fdecea; color: #c62828; }
+
+/* Action buttons */
+.actions button {
+  margin-right: 0.25rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-renew { background: #007bff; color: #fff; }
+.btn-edit  { background: #f1f1f1; color: #333; }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.pagination button:hover {
+  background: #f3f4f6;
+}
+
+.pagination button.active {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+
+.pagination button:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Mobile Responsive Styles for Renewal Section */
+
+/* Layout adjustments for tablets and smaller desktops */
+@media (max-width: 900px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  .renewals-table {
+    font-size: 14px;
+  }
+  .renewals-table th,
+  .renewals-table td {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    z-index: 1101;
+    transition: left 0.3s ease;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .sidebar.open .nav a span.text {
+    display: inline;
+  }
+  .sidebar.open ~ .content .topbar .hamburger-menu {
+    display: none;
+  }
+  .topbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Added fixed space between hamburger menu and title */
+  }
+  .hamburger-menu {
+    position: static;
+    cursor: pointer;
+    padding: 0 12px;
+    margin-right: 12px;
+    font-size: 24px;
+  }
+  .topbar .h1 {
+    flex: 1;
+    text-align: center;
+    margin: 0 12px;
+  }
+  .dashboard-cards {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+  .dashboard-card {
+    flex: 1;
+    padding: 0.5rem;
+  }
+  .dashboard-card h3 {
+    font-size: 0.8rem;
+  }
+  .dashboard-card p {
+    font-size: 1rem;
+  }
+  .renewals-table {
+    font-size: 12px;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .renewals-table th,
+  .renewals-table td {
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+  .actions button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .content {
+    padding: 8px;
+  }
+  .topbar .h1 {
+    font-size: 20px;
+  }
+  .dashboard-card h3 {
+    font-size: 0.7rem;
+  }
+  .dashboard-card p {
+    font-size: 0.9rem;
+  }
+  .renewals-table {
+    font-size: 11px;
+  }
+  .renewals-table th,
+  .renewals-table td {
+    padding: 0.4rem 0.5rem;
+  }
+}
+ .revenue-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn.ghost {
+    border: 2px solid #d0d7ff;
+    background: #f8faff;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    min-width: 170px;
+    text-align: center;
+}
+
+.btn.ghost:hover {
+    background: white;
+    border-color: #5570ff;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(120, 140, 200, 0.25);
+}

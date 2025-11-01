@@ -10,7 +10,7 @@ class Account extends Model
     'client_name',
     'contact',
     'gmail',
-    'gmail1',
+    //'gmail1',
     'gmail2',
     'category',
     'renewal_amount',
@@ -37,7 +37,7 @@ class Account extends Model
     'txn3',
     'extra',
     'birthday',
-    'anniversery'
+    'anniversary'
 ];
 
 

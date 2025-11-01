@@ -34,7 +34,7 @@
         <div class="actions"><a class="btn" href="{{ url('/website') }}">Cancel</a></div>
       </div>
 
-      <form id="addForm" class="form panel" method="POST" action="{{ url('/accounts') }}">
+      <form id="addForm" class="form panel" method="POST" action="{{ route('accounts.store') }}">
   @csrf
         <!-- Fields injected by JS for maintainability -->
         
